@@ -1,24 +1,35 @@
 {
   "blocks": [
     {
-      "block_id": "block_b13ecc5b1c27",
-      "timestamp": 1779791290,
-      "user_prompt": "who was albert einsiten?",
+      "block_id": "block_a4617a707f3a",
+      "timestamp": 1779791804,
+      "user_prompt": "who was albert eienstien?",
       "chunks": [
         {
-          "chunk_id": "chunk_d7df2d0525bd",
-          "content": "Theory of Relativity: Einstein's theory of relativity transformed our understanding of space and time. He showed that time and space are not absolute, but are relative to the observer's frame of reference."
+          "chunk_id": "chunk_b1985234d15b",
+          "content": "pecial Theory of Relativity (1905): Einstein introduced the concept of special relativity, which challenged the long-held notion of absolute time and space. He proposed that time and space are relative, and that the laws of physics are the same for all observers in uniform motion."
         }
       ]
     },
     {
-      "block_id": "block_4227810c2117",
-      "timestamp": 1779791294,
-      "user_prompt": "who was albert einsiten?",
+      "block_id": "block_3b99f6e6f996",
+      "timestamp": 1779791811,
+      "user_prompt": "who was albert eienstien?",
       "chunks": [
         {
-          "chunk_id": "chunk_2d821669f8bd",
-          "content": "Brownian Motion: Einstein's explanation of Brownian motion provided strong evidence for the existence of atoms and molecules.\nEinstein's impact extends far beyond the scientific community. He was a passionate advocate for peace, civil rights, and social justice. He was a strong critic of nationalism and militarism, and he spoke out against the dangers of nuclear weapons."
+          "chunk_id": "chunk_9e11111865ae",
+          "content": "n Motion (1905): Einstein provided a mathematical explanation for the random motion of particles suspended in a fluid, which helped to establish the existence of atoms and molecules.\nAwards and Legacy"
+        }
+      ]
+    },
+    {
+      "block_id": "block_c30d4adbca39",
+      "timestamp": 1779791826,
+      "user_prompt": "who was albert eienstien?",
+      "chunks": [
+        {
+          "chunk_id": "chunk_6bb0da9da3fd",
+          "content": "Albert Einstein was a renowned German-born physicist who is widely regarded as one of the most influential scientists of the 20th century. He is best known for his groundbreaking work in theoretical physics, particularly in the development of the theory of relativity and the famous equation E=mc\u00b2."
         }
       ]
     }

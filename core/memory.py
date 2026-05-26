@@ -39,3 +39,10 @@ def save_selection_to_context(selected_text, user_prompt=""):
     save_json(ACTIVE_CONTEXT_FILE, active_context)
     
     return block_id, chunk_id
+
+def clear_active_context():
+    """
+    Clears the active context routing table.
+    """
+    save_json(ACTIVE_CONTEXT_FILE, [])
+    return True

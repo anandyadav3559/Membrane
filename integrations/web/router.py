@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List
 
 from core.context import get_active_context_string
-from core.memory import save_selection_to_context
+from core.memory import save_selection_to_context, clear_active_context
 
 router = APIRouter()
 
@@ -11,6 +11,11 @@ router = APIRouter()
 async def api_get_active_context():
     context_str = get_active_context_string()
     return {"active_context_string": context_str}
+
+@router.post("/api/core/context/clear_active")
+async def api_clear_active_context():
+    clear_active_context()
+    return {"status": "success"}
 
 
 class SaveSelectionRequest(BaseModel):

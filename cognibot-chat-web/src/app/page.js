@@ -128,6 +128,7 @@ export default function Home() {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isLoading]);
 
+
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
     const prompt = input.trim();
@@ -151,6 +152,11 @@ export default function Home() {
         activeContext: data.active_context_used,
         evaluation: data.evaluation
       }]);
+
+      // Clear the frontend sidebar so old chunks don't pollute the UI for the next turn
+      // BUT keep them active in the backend active_context so they can be managed in the Client Server
+      setAllSavedSnippets([]);
+      
     } catch (e) {
       alert("Error connecting to backend.");
     } finally {
@@ -173,9 +179,11 @@ export default function Home() {
       
       {/* LEFT SIDEBAR: Memory Context */}
       <aside style={{ width: '320px', borderRight: '1px solid var(--border-color)', background: 'var(--bg-secondary)', display: 'flex', flexDirection: 'column' }}>
-        <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Database size={20} color="var(--accent-color)" />
-          <h2 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Memory Context</h2>
+        <div style={{ padding: '20px', borderBottom: '1px solid var(--border-color)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Database size={20} color="var(--accent-color)" />
+            <h2 style={{ fontSize: '1.1rem', fontWeight: 600 }}>Memory Context</h2>
+          </div>
         </div>
         <div style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
           {allSavedSnippets.length === 0 ? (
