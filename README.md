@@ -1,8 +1,17 @@
 # Cognitive Memory Engine & Chatbot
 
-This project implements a decoupled Memory Engine and Chatbot integration. The core engine is built with **FastAPI** to independently manage word-level text chunking, persistent memory (`context.json`), and active context logic.
+This project is an advanced Cognitive Chatbot Ecosystem designed to handle long-term interactions without suffering from context window overflow. It features a decoupled **Memory Engine** that manages active context and persistent memory, alongside a modern Next.js UI.
+
+The core engine is built with **FastAPI** to independently manage word-level text chunking, persistent memory (`context.json`), and active context logic.
 
 Users can click on specific words/phrases returned by the LLM to highlight and save them into the active context. Future prompts will automatically inject these selected chunks into the LLM system prompt to prevent token overflow while maintaining coherent long-term interactions.
+
+## Standalone Core Usage
+
+The `core` module and the FastAPI server (`main.py`) act as an independent **Context Memory Engine**. Because of the decoupled architecture:
+- You can run the core engine separately as a standalone microservice to augment external applications.
+- It provides a framework-agnostic REST API (`/api/context/*`) for granular memory management.
+- Any other chatbot client or agentic workflow can utilize this engine for smart word-level chunking and contextual memory, without relying on the provided Next.js UI.
 
 ## Setup
 
