@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contextual Memory Chat</title>
+    <!-- Include Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        body { font-family: sans-serif; margin: 20px; max-width: 800px; }
+        #chat-container { border: 1px solid #ccc; padding: 10px; min-height: 300px; margin-bottom: 10px; border-radius: 5px; max-height: 600px; overflow-y: auto;}
+        .message { margin-bottom: 15px; padding: 10px; border-radius: 5px; }
+        .user-msg { background-color: #e3f2fd; }
+        .bot-msg { background-color: #f5f5f5; }
+        .chunk { 
+            display: inline-block;
+            padding: 2px 4px; 
+            margin: 2px 1px; 
+            border: 1px solid transparent; 
+            cursor: pointer; 
+            border-radius: 3px;
+        }
+        .chunk:hover { border-color: #90caf9; background-color: #e3f2fd; }
+        .chunk.selected { background-color: #bbdefb; border-color: #2196f3; }
+        .chunk-index { display: none; }
+        #controls { margin-top: 10px; display: flex; gap: 10px; }
+        input[type="text"] { flex-grow: 1; padding: 8px; }
+        button { padding: 8px 15px; cursor: pointer; }
+        pre { background: #eee; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 0.9em; border-left: 4px solid #4CAF50;}
+        .config-panel { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #ddd; }
+        .config-panel label { margin-right: 15px; cursor: pointer;}
+        .config-input { margin-top: 10px; }
+        .config-input input { width: 100%; box-sizing: border-box; padding: 8px;}
+        .action-btns { margin-top: 10px; display: flex; gap: 10px; }
+        .action-btns button { border: none; border-radius: 3px; padding: 8px 12px; color: white; }
+        .btn-green { background-color: #4CAF50; }
+        .btn-blue { background-color: #2196F3; }
+        [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body x-data="chatApp()">
+
+    <h2>Contextual Memory Chat</h2>
+    
+    <div class="config-panel">
+        <strong>LLM Configuration:</strong><br><br>
+        <div style="margin-bottom: 10px;">
+            <label><input type="radio" x-model="config.mode" value="simulate"> Simulate (No API)</label>
+            <label><input type="radio" x-model="config.mode" value="api_key"> Direct API Key</label>
+            <label><input type="radio" x-model="config.mode" value="proxy"> LLM Proxy</label>
+        </div>
+        
+        <div x-show="config.mode === 'api_key'" x-cloak class="config-input">
+            <input type="text" x-model="config.api_key" placeholder="Enter your Groq/OpenAI API Key (e.g., gsk_...)">
+        </div>
+        <div x-show="config.mode === 'proxy'" x-cloak class="config-input">
+            <input type="text" x-model="config.proxy_url" placeholder="Enter proxy URL (e.g., http://127.0.0.1:8001/v1/chat/completions)">
+        </div>
+
+        <div style="margin-top: 15px; border-top: 1px solid #eee; padding-top: 10px;">
+            <label style="font-weight: bold; color: #d32f2f;">
+                <input type="checkbox" x-model="config.evaluate"> Run LLM Evaluation (Metrics & Logs)
+            </label>
+            <p style="font-size: 0.8em; color: #666; margin-top: 5px; margin-bottom: 0;">If enabled, a second request is made to score the answer for hallucination and confidence.</p>
+        </div>
+    </div>
+
+    <div id="chat-container">
+        <template x-for="(msg, msgIndex) in messages" :key="msgIndex">
+            <div class="message" :class="msg.role === 'user' ? 'user-msg' : 'bot-msg'">
+                
+                <!-- User Message -->
+                <template x-if="msg.role === 'user'">
+                    <span x-text="msg.content"></span>
+                </template>
+
+                <!-- Bot Message -->
+                <template x-if="msg.role === 'bot'">
+                    <div>
+                        <template x-if="msg.activeContext">
+                            <pre x-text="msg.activeContext"></pre>
+                        </template>
+
+                        <p style="font-size: 0.9em; color: #666;"><em>Click on words of the response below to remember them for the next prompt (click start word, then end word):</em></p>
+                        
+                        <div style="line-height: 1.8;">
+                            <template x-for="chunk in msg.chunks" :key="chunk.index">
+                                <span class="chunk" 
+                                     :class="msg.selectedIndexes.includes(chunk.index) ? 'selected' : ''"
+                                     @click="toggleChunkSelection(msg, chunk.index)"
+                                     x-text="chunk.content">
+                                </span>
+                            </template>
+                        </div>
+
+                        <div class="action-btns">
+                            <button class="btn-green" @click="commitSelection(msg, 'selected')">Add Selected Chunks</button>
+                            <button class="btn-blue" @click="commitSelection(msg, 'all')">Add Entire Block</button>
+                        </div>
+
+                        <template x-if="msg.evaluation">
+                            <div style="margin-top: 15px; padding: 10px; background-color: #fdfaf6; border: 1px solid #f5e6d3; border-radius: 5px; font-size: 0.9em;">
+                                <strong style="color: #c48c3e;">📊 Evaluation Metrics</strong>
+                                <ul style="margin-top: 5px; padding-left: 20px; color: #666;">
+                                    <li><strong>Tokens Used:</strong> <span x-text="msg.evaluation.tokens"></span></li>
+                                    <li><strong>Confidence:</strong> <span x-text="Math.round(msg.evaluation.confidence_score * 100) + '%'"></span></li>
+                                    <li><strong>Hallucination Score:</strong> <span x-text="msg.evaluation.hallucination_score"></span></li>
+                                </ul>
+                                <p style="margin-top: 5px; font-style: italic; color: #888;" x-text="msg.evaluation.reasoning"></p>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+            </div>
+        </template>
+    </div>
+
+    <div id="controls">
+        <input type="text" x-model="currentPrompt" @keydown.enter="sendPrompt()" placeholder="Ask a question...">
+        <button @click="sendPrompt()" :disabled="isLoading" x-text="isLoading ? 'Sending...' : 'Send'"></button>
+    </div>
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('chatApp', () => ({
+                config: {
+                    mode: 'simulate', // simulate, api_key, proxy
+                    api_key: '',
+                    proxy_url: 'http://localhost:8001/v1/chat/completions',
+                    evaluate: false
+                },
+                currentPrompt: '',
+                messages: [],
+                isLoading: false,
+
+                async sendPrompt() {
+                    const prompt = this.currentPrompt.trim();
+                    if (!prompt || this.isLoading) return;
+
+                    // Add user message to UI
+                    this.messages.push({ role: 'user', content: prompt });
+                    this.currentPrompt = '';
+                    this.isLoading = true;
+                    this.scrollToBottom();
+
+                    try {
+                        const res = await fetch('/chat', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                prompt: prompt,
+                                config: this.config
+                            })
+                        });
+
+                        const data = await res.json();
+                        
+                        this.messages.push({
+                            role: 'bot',
+                            responseText: data.response,
+                            chunks: data.chunks,
+                            activeContext: data.active_context_used,
+                            userPrompt: data.user_prompt || prompt,
+                            selectedIndexes: [],
+                            selectionStart: null,
+                            evaluation: data.evaluation
+                        });
+                        this.scrollToBottom();
+
+                    } catch (e) {
+                        alert("Error connecting to backend.");
+                    } finally {
+                        this.isLoading = false;
+                    }
+                },
+
+                toggleChunkSelection(msg, clickedIndex) {
+                    if (msg.selectionStart === null) {
+                        // Start new range pair
+                        msg.selectionStart = clickedIndex;
+                        if (!msg.selectedIndexes.includes(clickedIndex)) {
+                            msg.selectedIndexes.push(clickedIndex);
+                        }
+                    } else {
+                        // End range pair
+                        const minIdx = Math.min(msg.selectionStart, clickedIndex);
+                        const maxIdx = Math.max(msg.selectionStart, clickedIndex);
+                        
+                        for (let i = minIdx; i <= maxIdx; i++) {
+                            if (!msg.selectedIndexes.includes(i)) {
+                                msg.selectedIndexes.push(i);
+                            }
+                        }
+                        msg.selectionStart = null;
+                    }
+                },
+
+                async commitSelection(msg, scope) {
+                    let indexesToSave = [];
+                    
+                    if (scope === 'selected') {
+                        indexesToSave = msg.selectedIndexes;
+                        if (indexesToSave.length === 0) {
+                            alert("Please select some chunks first before clicking Add Selected Chunks.");
+                            return;
+                        }
+                    } else if (scope === 'all') {
+                        indexesToSave = msg.chunks.map(c => c.index);
+                        if (indexesToSave.length === 0) return;
+                    }
+
+                    try {
+                        const res = await fetch('/save_selection', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                indexes: indexesToSave,
+                                response_text: msg.responseText,
+                                user_prompt: msg.userPrompt
+                            })
+                        });
+                        const data = await res.json();
+                        if (data.status === "success") {
+                            alert("Context committed successfully!");
+                            msg.selectedIndexes = []; // clear selections on success
+                            msg.selectionStart = null;
+                        } else {
+                            alert("Error committing: " + data.message);
+                        }
+                    } catch (e) {
+                        alert("Error contacting server.");
+                    }
+                },
+
+                scrollToBottom() {
+                    setTimeout(() => {
+                        const container = document.getElementById("chat-container");
+                        container.scrollTop = container.scrollHeight;
+                    }, 50);
+                }
+            }));
+        });
+    </script>
+</body>
+</html>
