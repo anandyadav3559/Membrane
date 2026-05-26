@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cognibot Client - Context Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="glass-header">
+            <div class="header-content">
+                <h1>Cognibot Context</h1>
+                <p>Manage and organize chunks and blocks using drag & drop</p>
+            </div>
+            <div class="header-actions">
+                <button id="viewTrashBtn" class="btn btn-secondary"><i class="fas fa-trash-restore"></i> View Trash</button>
+                <button id="previewBtn" class="btn btn-secondary"><i class="fas fa-eye"></i> Preview Context</button>
+                <button id="addBlockBtn" class="btn btn-primary"><i class="fas fa-plus"></i> New Block</button>
+            </div>
+        </header>
+
+        <main class="split-layout">
+            <!-- Active Pane -->
+            <div class="pane pane-active glass-panel">
+                <div class="pane-header">
+                    <h2><i class="fas fa-check-circle" style="color: var(--success);"></i> Active Context</h2>
+                    <span class="badge" id="activeBadge">0</span>
+                </div>
+                <div id="activeBlocksContainer" class="blocks-container drop-zone">
+                    <!-- Active Blocks Go Here -->
+                </div>
+            </div>
+
+            <!-- Inactive Pane -->
+            <div class="pane pane-inactive glass-panel">
+                <div class="pane-header">
+                    <h2><i class="fas fa-box" style="color: var(--text-muted);"></i> Available Blocks</h2>
+                    <span class="badge" id="inactiveBadge">0</span>
+                </div>
+                <div id="inactiveBlocksContainer" class="blocks-container drop-zone">
+                    <!-- Inactive Blocks Go Here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit/Add Modal -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+        <div class="modal glass-panel">
+            <div class="modal-header">
+                <h2 id="modalTitle">Modal Title</h2>
+                <button id="closeModalBtn" class="icon-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="modalForm">
+                    <div class="form-group">
+                        <label id="modalLabel" for="modalInput">Prompt / Content</label>
+                        <textarea id="modalInput" rows="4" required></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" id="cancelModalBtn" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewOverlay" class="modal-overlay hidden">
+        <div class="modal preview-modal glass-panel">
+            <div class="modal-header">
+                <h2><i class="fas fa-eye"></i> Current Active Context</h2>
+                <button id="closePreviewBtn" class="icon-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-stats">
+                    <div class="stat-box">
+                        <span class="stat-label">Estimated Tokens</span>
+                        <span class="stat-value" id="previewTokens">0</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Characters</span>
+                        <span class="stat-value" id="previewChars">0</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Concatenated Context Text</label>
+                    <textarea id="previewText" rows="10" readonly></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Active Blocks & Chunks Mapping</label>
+                    <pre id="previewMapping" class="code-block"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trash Modal -->
+    <div id="trashOverlay" class="modal-overlay hidden">
+        <div class="modal preview-modal glass-panel" style="max-width: 800px;">
+            <div class="modal-header">
+                <h2><i class="fas fa-trash-alt"></i> Trash</h2>
+                <button id="closeTrashBtn" class="icon-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+                <div class="form-group">
+                    <label>Deleted Blocks</label>
+                    <div id="trashBlocksContainer" class="blocks-container"></div>
+                </div>
+                <div class="form-group">
+                    <label>Deleted Chunks</label>
+                    <div id="trashChunksContainer" class="blocks-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

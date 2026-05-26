@@ -1,60 +1,30 @@
 import time
 from core.utils import load_json, save_json, generate_id, CONTEXT_FILE, ACTIVE_CONTEXT_FILE
-from core.chunking import split_text_into_chunks
 
-def save_selection_to_context(selected_indexes, llm_last_response, user_prompt=""):
+def save_selection_to_context(selected_text, user_prompt=""):
     """
-    Commits selected chunks to persistent storage and active memory.
+    Commits selected text to persistent storage and active memory as a new block.
     """
-    if not selected_indexes:
-        return None
+    if not selected_text or not selected_text.strip():
+        return None, None
 
-    all_chunks = split_text_into_chunks(llm_last_response)
-    selected_indexes = sorted(list(set(selected_indexes)))
-    
-    merged_chunks = []
-    current_group = []
-    
-    for idx in selected_indexes:
-        if idx < 0 or idx >= len(all_chunks):
-            continue
-            
-        if not current_group:
-            current_group.append(idx)
-        else:
-            if idx == current_group[-1] + 1:
-                current_group.append(idx)
-            else:
-                content = " ".join([all_chunks[i]['content'] for i in current_group])
-                merged_chunks.append({
-                    "chunk_id": generate_id(f"chunk_{current_group[0]}"),
-                    "content": content
-                })
-                current_group = [idx]
-                
-    if current_group:
-        content = " ".join([all_chunks[i]['content'] for i in current_group])
-        merged_chunks.append({
-            "chunk_id": generate_id(f"chunk_{current_group[0]}"),
-            "content": content
-        })
-    
-    if not merged_chunks:
-        return None
+    chunk_id = generate_id("chunk")
+    new_chunk = {
+        "chunk_id": chunk_id,
+        "content": selected_text.strip()
+    }
     
     block_id = generate_id("block")
     new_block = {
         "block_id": block_id,
         "timestamp": int(time.time()),
         "user_prompt": user_prompt,
-        "chunks": merged_chunks
+        "chunks": [new_chunk]
     }
     
     # Update persistent block storage
     context_data = load_json(CONTEXT_FILE, {"blocks": []})
-    if "blocks" not in context_data:
-        context_data["blocks"] = []
-    context_data["blocks"].append(new_block)
+    context_data.setdefault("blocks", []).append(new_block)
     save_json(CONTEXT_FILE, context_data)
     
     # Add to active context array
@@ -64,8 +34,8 @@ def save_selection_to_context(selected_indexes, llm_last_response, user_prompt="
         
     active_context.append({
         "block_id": block_id,
-        "active_chunks": [c["chunk_id"] for c in merged_chunks]
+        "active_chunks": [chunk_id]
     })
     save_json(ACTIVE_CONTEXT_FILE, active_context)
     
-    return block_id
+    return block_id, chunk_id

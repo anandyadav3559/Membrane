@@ -9,5 +9,12 @@ uv run pytest tests/
 # You can start the llm-keypool server directly using uvx:
 uvx llm-keypool proxy --port 8001
 
-# 4. Start Chatbot Backend
+# 4. Start Core Runtime Engine (Handles API & Context)
 uv run uvicorn main:app --port 5005 --reload
+
+# 5. Start Next.js Chatbot UI (Frontend)
+cd cognibot-chat-web && npm run dev
+# (Runs on http://localhost:3000)
+
+# 6. Start Cognibot Client (Context Management GUI)
+uv run python cognibot-client/app.py

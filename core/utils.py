@@ -18,5 +18,9 @@ def save_json(filepath, data):
     with open(filepath, 'w') as f:
         json.dump(data, f, indent=2)
 
-def generate_id(prefix):
-    return f"{prefix}_{int(time.time() * 1000)}"
+import hashlib
+
+def generate_id(prefix, content=""):
+    hash_input = f"{content}_{time.time()}".encode('utf-8')
+    hash_str = hashlib.sha256(hash_input).hexdigest()[:12]
+    return f"{prefix}_{hash_str}"

@@ -1,10 +1,19 @@
 from fastapi import FastAPI
-from integrations.chatbot.router import router as chatbot_router
+from integrations.web.router import router as web_router
+from fastapi.middleware.cors import CORSMiddleware
 import os
 
 app = FastAPI(title="Cognitive Chatbot Runtime Engine")
 
-app.include_router(chatbot_router)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(web_router)
 
 if __name__ == "__main__":
     import uvicorn
