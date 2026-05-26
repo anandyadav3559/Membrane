@@ -1,0 +1,19 @@
+{
+  "blocks": [
+    {
+      "block_id": "block_1779785863093",
+      "timestamp": 1779785863,
+      "user_prompt": "hii, who is the father of ai?",
+      "chunks": [
+        {
+          "chunk_id": "chunk_27_1779785863093",
+          "content": "\"Father of AI\" is: **John McCarthy** (1927-2011)"
+        },
+        {
+          "chunk_id": "chunk_102_1779785863093",
+          "content": "**Alan Turing** (1912-1954): A British mathematician, computer scientist, and logician who proposed the Turing Test, a measure of a machine's ability to exhibit intelligent behavior equivalent to, or indistinguishable from, that of a human."
+        }
+      ]
+    }
+  ]
+}

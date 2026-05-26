@@ -5,14 +5,11 @@ import json
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from memory_manager import (
-    save_selection_to_context, 
-    update_active_context, 
-    get_active_context_string,
-    CONTEXT_FILE,
-    ACTIVE_CONTEXT_FILE,
-    split_text_into_chunks
-)
+from core.memory import save_selection_to_context
+from core.activation import update_active_context
+from core.context import get_active_context_string
+from core.utils import CONTEXT_FILE, ACTIVE_CONTEXT_FILE
+from core.chunking import split_text_into_chunks
 
 def count_tokens(text):
     try:

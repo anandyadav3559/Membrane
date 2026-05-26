@@ -1,12 +1,13 @@
 # 1. Project Initialization & Dependencies
 uv init
-uv add flask tiktoken requests
+uv add fastapi uvicorn pydantic jinja2 python-multipart requests tiktoken pytest
 
 # 2. Testing
-uv run python test_memory.py
+uv run pytest tests/
 
 # 3. Start LLM Proxy (Run this in a separate terminal)
 # You can start the llm-keypool server directly using uvx:
 uvx llm-keypool proxy --port 8001
+
 # 4. Start Chatbot Backend
-uv run python app.py
+uv run uvicorn main:app --port 5005 --reload
