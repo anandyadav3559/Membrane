@@ -1,6 +1,6 @@
 # Core Runtime Engine
 
-The `core` directory serves as the isolated memory, context, and storage engine for the Cognitive Chatbot ecosystem. Its primary design goal is **Decoupled Cognition**: separating the persistent memory operations, LLM context aggregation, and data storage logic away from the client applications (like the Chatbot UI and Context Management GUI). 
+The `core` directory serves as the isolated memory, context, and storage engine for the Membrane ecosystem. Its primary design goal is **Decoupled Architecture**: separating the persistent memory operations, LLM context aggregation, and data storage logic away from the client applications (like the Chatbot UI and Context Management GUI). 
 
 By isolating this logic, any frontend application can hook into the AI context without needing to understand how files are saved or how active context is injected into prompts.
 

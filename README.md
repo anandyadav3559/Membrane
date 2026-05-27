@@ -1,6 +1,6 @@
-# Cognitive Memory Engine & Chatbot
+# Membrane Memory Engine & Chatbot
 
-This project is an advanced Cognitive Chatbot Ecosystem designed to handle long-term interactions without suffering from context window overflow. It features a decoupled **Memory Engine** that manages active context and persistent memory, alongside a modern Next.js UI.
+This project is an advanced Membrane Ecosystem designed to handle long-term interactions without suffering from context window overflow. It features a decoupled **Memory Engine** that manages active context and persistent memory, alongside a modern Next.js UI.
 
 The core engine is built with **FastAPI** to independently manage word-level text chunking, persistent memory (`context.json`), and active context logic.
 

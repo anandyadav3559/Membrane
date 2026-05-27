@@ -1,8 +1,16 @@
 [
   {
-    "block_id": "block_c30d4adbca39",
+    "block_id": "block_2fb80815bb11",
     "active_chunks": [
-      "chunk_6bb0da9da3fd"
+      "chunk_6cd7aee6611f"
     ]
+  },
+  {
+    "block_id": "block_ff001ae45245",
+    "active_chunks": []
+  },
+  {
+    "block_id": "block_38420f4fa4e7",
+    "active_chunks": []
   }
 ]

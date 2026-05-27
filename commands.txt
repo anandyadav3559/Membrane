@@ -13,8 +13,8 @@ uvx llm-keypool proxy --port 8001
 uv run uvicorn main:app --port 5005 --reload
 
 # 5. Start Next.js Chatbot UI (Frontend)
-cd cognibot-chat-web && npm run dev
+cd membrane-chat-web && npm run dev
 # (Runs on http://localhost:3000)
 
-# 6. Start Cognibot Client (Context Management GUI)
-uv run python cognibot-client/app.py
+# 6. Start Membrane Client (Context Management GUI)
+uv run python membrane-client/app.py

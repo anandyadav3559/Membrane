@@ -7,11 +7,13 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from core.utils import generate_id
 
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
 app = Flask(__name__)
+CORS(app)
 
 # Fallback to an absolute path relative to this script if not in env
 default_data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'core', 'data'))

@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 import { Send, Settings, Check, X, BookmarkPlus, Loader2, Sparkles, Trash2, Database } from 'lucide-react';
@@ -83,7 +84,7 @@ const Message = ({ msg, onSnippetSaved }) => {
     <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '32px', maxWidth: '85%' }} className="animate-fade-in">
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
         <Sparkles size={16} color="var(--accent-color)" />
-        <span style={{ fontWeight: 500 }}>Cognibot</span>
+        <span style={{ fontWeight: 500 }}>Membrane</span>
       </div>
 
       <div style={{ position: 'relative' }}>
@@ -94,7 +95,7 @@ const Message = ({ msg, onSnippetSaved }) => {
           dangerouslySetInnerHTML={{ __html: rawMarkup }}
         />
 
-        {showTooltip && (
+        {showTooltip && typeof document !== 'undefined' && createPortal(
           <div 
             className="selection-tooltip"
             style={{
@@ -109,7 +110,8 @@ const Message = ({ msg, onSnippetSaved }) => {
           >
             {isSaving ? <Loader2 size={14} className="animate-spin" /> : <BookmarkPlus size={14} />}
             {isSaving ? "Saving..." : "Save Selection"}
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     </div>
@@ -217,7 +219,7 @@ export default function Home() {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
         <header style={{ padding: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)' }}>
           <div>
-            <h1 style={{ fontSize: '1.4rem', fontWeight: 600 }}>Cognitive Chatbot</h1>
+            <h1 style={{ fontSize: '1.4rem', fontWeight: 600 }}>Membrane Chatbot</h1>
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Chat with context-aware AI</p>
           </div>
         </header>

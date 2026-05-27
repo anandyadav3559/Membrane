@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "========================================="
-echo " Stopping Cognitive Chatbot Ecosystem"
+echo " Stopping Membrane Ecosystem"
 echo "========================================="
 
 kill_port() {
@@ -21,7 +21,7 @@ kill_port 3000
 # Core Engine API
 kill_port 5005
 
-# Cognibot Client (Context Manager)
+# Membrane Client (Context Manager)
 kill_port 5007
 
 # LLM Proxy

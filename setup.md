@@ -1,6 +1,6 @@
 # Setup Instructions
 
-This guide provides detailed steps on how to set up and run the Cognitive Chatbot Ecosystem.
+This guide provides detailed steps on how to set up and run the Membrane Ecosystem.
 
 ## Environment Variables (`.env`)
 
@@ -28,7 +28,7 @@ The application utilizes a `.env` file in the root directory to manage the LLM e
    uv add fastapi uvicorn pydantic jinja2 python-multipart requests tiktoken pytest python-dotenv
 
    # Install Next.js frontend dependencies
-   cd cognibot-chat-web && npm install
+   cd membrane-chat-web && npm install
    ```
 3. **Start All Services**:
    The ecosystem consists of multiple microservices. You can start all of them simultaneously using the provided bash script from the root directory:

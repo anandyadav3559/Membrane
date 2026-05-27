@@ -3,7 +3,7 @@ from integrations.web.router import router as web_router
 from fastapi.middleware.cors import CORSMiddleware
 import os
 
-app = FastAPI(title="Cognitive Chatbot Runtime Engine")
+app = FastAPI(title="Membrane Runtime Engine")
 
 app.add_middleware(
     CORSMiddleware,
