@@ -8,7 +8,8 @@ This project is an advanced Membrane Ecosystem designed to handle long-term inte
 The core engine is built with **FastAPI** to independently manage word-level text chunking, persistent memory (`context.json`), and active context logic.
 
 Users can click on specific words/phrases returned by the LLM to highlight and save them into the active context. Future prompts will automatically inject these selected chunks into the LLM system prompt to prevent token overflow while maintaining coherent long-term interactions.
-https://youtu.be/ZsdlF09R-Ic
+
+Click to watch
 [![Watch the demo](https://img.youtube.com/vi/ZsdlF09R-Ic/maxresdefault.jpg)](https://youtu.be/ZsdlF09R-Ic)
 
 
