@@ -1,3 +1,5 @@
+https://github.com/user-attachments/assets/a86970a3-fa54-4538-adae-d5a895d8e275
+<img width="2503" height="1365" alt="Gemini_Generated_Image_18obro18obro18ob" src="https://github.com/user-attachments/assets/327eddad-d2cf-4680-b9e3-8ff1465a0aa6" />
 # Membrane Memory Engine & Chatbot
 
 This project is an advanced Membrane Ecosystem designed to handle long-term interactions without suffering from context window overflow. It features a decoupled **Memory Engine** that manages active context and persistent memory, alongside a modern Next.js UI.
@@ -5,6 +7,7 @@ This project is an advanced Membrane Ecosystem designed to handle long-term inte
 The core engine is built with **FastAPI** to independently manage word-level text chunking, persistent memory (`context.json`), and active context logic.
 
 Users can click on specific words/phrases returned by the LLM to highlight and save them into the active context. Future prompts will automatically inject these selected chunks into the LLM system prompt to prevent token overflow while maintaining coherent long-term interactions.
+https://github.com/user-attachments/assets/c8ec096c-3d80-4c6a-98d1-2b7eb709cb2a
 
 ## Standalone Core Usage
 
