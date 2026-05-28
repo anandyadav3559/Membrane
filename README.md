@@ -2,8 +2,9 @@
   src="https://github.com/user-attachments/assets/a86970a3-fa54-4538-adae-d5a895d8e275"
   controls
   width="100%"
->
-</video><img width="2503" height="1365" alt="Gemini_Generated_Image_18obro18obro18ob" src="https://github.com/user-attachments/assets/327eddad-d2cf-4680-b9e3-8ff1465a0aa6" />
+></video>
+
+<img width="2503" height="1365" alt="Gemini_Generated_Image_18obro18obro18ob" src="https://github.com/user-attachments/assets/327eddad-d2cf-4680-b9e3-8ff1465a0aa6" />
 # Membrane Memory Engine & Chatbot
 
 This project is an advanced Membrane Ecosystem designed to handle long-term interactions without suffering from context window overflow. It features a decoupled **Memory Engine** that manages active context and persistent memory, alongside a modern Next.js UI.
