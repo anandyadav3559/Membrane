@@ -1,11 +1,4 @@
-<iframe 
-  width="100%" 
-  height="500"
-  src="https://www.youtube.com/embed/YOUR_VIDEO_ID](https://youtu.be/ZsdlF09R-Ic"
-  title="Membrane"
-  frameborder="0"
-  allowfullscreen>
-</iframe>
+https://youtu.be/ZsdlF09R-Ic?si=K3OhuoNXyj170Uhj
 
 <img width="2503" height="1365" alt="Gemini_Generated_Image_18obro18obro18ob" src="https://github.com/user-attachments/assets/327eddad-d2cf-4680-b9e3-8ff1465a0aa6" />
 # Membrane Memory Engine & Chatbot
